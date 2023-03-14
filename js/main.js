@@ -40,16 +40,21 @@ Vue.component('col3', {
                             <input type="submit" @click="saveChanges(task)">
                          </div>                         
                          
+                         <div v-if='task.returned' class="reasonForReturn">
+                            <label for="reason">Причина возврата</label>
+                            <input type="text" id="reason" v-model="task.reasonForReturn">
+                            <button @click="goLeft(task)">Вернуть</button>
+                         </div>
                          
                          <h3>{{ task.list_name}} </h3>
                          <p>Описание задачи: {{task.taskDisc}}</p>
                          <p>Дедлайн: {{ task.deadLine }}</p>
-                         <p v-if="task.edited">Посденее редактирование: {{ task.edited }}</p>
+                         <p v-if="task.edited">Последнее редактирование: {{ task.edited }}</p>
                          
                          <div class="btns">
                             <button @click="del(task)">Удалить</button>
                             <button @click="edit(task)">Редактировать</button>
-                            <button @click="goLeft(task)">< Тут будет стрелочка</button>
+                            <button @click="returnTask(task)">< Тут будет стрелочка</button>
                             <button @click="goRight(task)"> Тут будет стрелочка > </button>
                         </div>
                     </div>
@@ -76,6 +81,9 @@ Vue.component('col3', {
         goRight(task){
             eventBus.$emit('takeFromThird', task);
             this.thirdColList.splice(this.thirdColList.indexOf(task), 1);
+        },
+        returnTask(task){
+            task.returned = true;
         },
         goLeft(task){
             eventBus.$emit('takeBackFromThird', task);
@@ -117,6 +125,9 @@ Vue.component('col2', {
                          
                          <h3>{{ task.list_name}} </h3>
                          <p>Описание задачи: {{task.taskDisc}}</p>
+                         
+                         <p v-if="task.returned" class="returned">Возвращена</p>
+                         <p v-if="task.reasonForReturn">Причина возврата: {{ task.reasonForReturn }}</p>
                          <p>Дедлайн: {{ task.deadLine }}</p>
                          <p v-if="task.edited">Посденее редактирование: {{ task.edited }}</p>
                          
@@ -272,7 +283,9 @@ Vue.component('createTask', {
                 deadLine: this.deadline,
                 doneDate: new Date(),
                 edit: false,
-                edited: null
+                edited: null,
+                returned: false,
+                reasonForReturn: null,
             }
             eventBus.$emit('CreateTaskList', taskList);
             this.list_name = this.deadline = this.taskDisc = null;
