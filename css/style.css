@@ -1,0 +1,144 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Montserrat', sans-serif;
+}
+
+body {
+    background-color: #d5deff;
+}
+
+header {
+    width: 100vw;
+    background-color: #ffffff;
+    height: 30px;
+    display: flex;
+    align-items: center;
+    padding-left: 100px;
+    padding-right: 100px;
+    padding-bottom: 20px;
+    padding-top: 20px;
+}
+
+h1 {
+    color: #3f4149;
+    font-size: 20px;
+}
+
+.col {
+  width: 400px;
+}
+
+form {
+    width: 300px;
+    display: flex;
+    flex-direction: column;
+    background-color: white;
+    padding: 30px;
+    border-radius: 20px;
+    height: 550px;
+}
+
+input {
+    padding: 5px;
+    border-radius: 5px;
+    border: 1px solid #3f4149;
+    margin-bottom: 10px;
+}
+label {
+    margin-bottom: 20px;
+    font-size: 15px;
+}
+
+.btn {
+    background-color: #3655c4;
+    padding: 10px;
+    color: white;
+    border: none;
+}
+
+.btn:hover {
+    background-color: #253c8a;
+    transition: .2s;
+}
+
+form > h2, p {
+    margin-bottom: 20px;
+}
+
+form > p {
+    margin-top: 20px;
+}
+
+.desk {
+    display: flex;
+    justify-content: center;
+    gap: 50px;
+    margin-top: 40px;
+    flex-direction: column;
+    align-items: baseline;
+    border: none;
+    width: 95%;
+    padding-right: 50px;
+    padding-left: 50px;
+}
+
+.desk > div > div {
+    width: 1000px;
+    display: flex;
+    flex-direction: row;
+    border-radius: 20px;
+    gap: 30px;
+}
+.desk > div  {
+    display: flex;
+    flex-direction: row;
+    gap: 50px;
+}
+
+.col {
+    width: 33%;
+}
+
+.col-item {
+    display: flex;
+    flex-direction: column;
+    background-color: white;
+    padding: 30px;
+    border-radius: 20px;
+    margin-bottom: 40px;
+}
+
+.task-list-name {
+    font-weight: 1000;
+}
+
+.col > h2 {
+    margin-bottom: 20px;
+}
+
+.done {
+    text-decoration: line-through;
+}
+
+.disabled {
+    color: #cccccc;
+}
+
+.errors {
+    color: darkred;
+    background-color: #ff9595;
+    width: 100%;
+    border-radius: 5px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 10px;
+    margin-bottom: 20px;
+}
+
+
+.block {
+    color: #858891;
+}
