@@ -26,66 +26,40 @@ Vue.component('col4', {
         </div>
         <h2>Законченные задачи</h2>
             <div>
-                    <div v-for="task in firstColList" class="col-item">
-                        
-                         <div class="edit_form" v-if="task.edit">
-                            <label for="list_name">Заголовок</label>
-                            <input type="text" id="list_name" v-model="task.list_name">
-                            
-                            <label for="taskDisk">Описание задачи</label>
-                            <input type="text" id="taskDisc" v-model="task.taskDisc">
-                            
-                            <label for="deadLine">Дедлайн</label>
-                            <input type="date" id="deadLine" v-model="task.deadLine">
-                            
-                            <input type="submit" @click="saveChanges(task)">
-                         </div>                         
-                         
-                         
+                    <div v-for="task in fourthColList" class="col-item">
                          <h3>{{ task.list_name}} </h3>
                          <p>Описание задачи: {{task.taskDisc}}</p>
                          <p>Дедлайн: {{ task.deadLine }}</p>
-                         <p v-if="task.edited">Посденее редактирование: {{ task.edited }}</p>
+                         <p>Дата выполнения задачи: {{ task.doneDate }}</p>
+                         <p v-if="task.doneStatus">Сроки соблюдены</p>
+                         <p v-else>Дедлайн просрочен</p>
                          
-                         <div class="btns">
-                            <button @click="del(task)">Удалить</button>
-                            <button @click="edit(task)">Редактировать</button>
-                            <button @click="goRight(task)"> Тут будет стрелочка > </button>
-                        </div>
+                         <p v-if="task.edited">Посденее редактирование: {{ task.edited }}</p>
                     </div>
             </div>
         </div>
     `,
     data () {
         return {
-            firstColList: [],
+            fourthColList: [],
             errors:[]
         }
     },
     methods: {
         del(task){
-            this.firstColList.splice(this.firstColList.indexOf(task), 1);
+            this.fourthColList.splice(this.fourthColList.indexOf(task), 1);
         },
-        edit(task) {
-            task.edit = true;
-        },
-        saveChanges(task){
-            task.edited = new Date();
-            task.edit = false;
-        },
-        goRight(task){
-            eventBus.$emit('takeFromFirst', task);
-            this.firstColList.splice(this.firstColList.indexOf(task), 1);
-        },
-
 
     },
     mounted() {
-        eventBus.$on('CreateTaskList', list => {
-            this.firstColList.push(list);
-        })
-        eventBus.$on('takeBackFromSecond', task => {
-            this.firstColList.push(task);
+        eventBus.$on('takeFromThird', task => {
+            task.doneDate = new Date();
+
+            if (task.deadline < task.doneDate){
+                task.doneStatus = true
+            } else task.doneStatus = false;
+
+            this.fourthColList.push(task);
         })
     }
 })
@@ -361,6 +335,7 @@ Vue.component('createTask', {
                 edited: null,
                 returned: false,
                 reasonForReturn: null,
+                doneStatus: null
             }
             eventBus.$emit('CreateTaskList', taskList);
             this.list_name = this.deadline = this.taskDisc = null;
