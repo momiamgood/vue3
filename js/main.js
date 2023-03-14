@@ -17,7 +17,6 @@ Vue.component('desk', {
 })
 
 
-
 Vue.component('col2', {
     template: `
         <div class="col">
