@@ -142,3 +142,18 @@ form > p {
 .block {
     color: #858891;
 }
+
+button > img {
+    width: 10%;
+    height: 10%;
+}
+
+textarea {
+    resize: none;
+    padding: 10px;
+    height: 100px;
+    margin-bottom: 20px;
+    border: 1px solid #3f4149;
+    border-radius: 5px;
+
+}

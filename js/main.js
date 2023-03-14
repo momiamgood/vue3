@@ -55,10 +55,14 @@ Vue.component('col4', {
         eventBus.$on('takeFromThird', task => {
             task.doneDate = new Date();
 
-            if (task.deadline < task.doneDate){
+            if (task.deadLine <= task.doneDate){
                 task.doneStatus = true
             } else task.doneStatus = false;
 
+
+            console.log(task.deadLine);
+            console.log(task.doneDate);
+            console.log(task.doneStatus);
             this.fourthColList.push(task);
         })
     }
@@ -101,10 +105,10 @@ Vue.component('col3', {
                          <p v-if="task.edited">Последнее редактирование: {{ task.edited }}</p>
                          
                          <div class="btns">
-                            <button @click="del(task)">Удалить</button>
-                            <button @click="edit(task)">Редактировать</button>
-                            <button @click="returnTask(task)">< Тут будет стрелочка</button>
-                            <button @click="goRight(task)"> Тут будет стрелочка > </button>
+                            <button @click="del(task)"><img src="../media/delete.svg" alt="delete"></button>
+                            <button @click="edit(task)"><img src="../media/edit.svg" alt="edit"></button>
+                            <button @click="returnTask(task)"><img src="../media/arrow_left.svg" alt="left"></button>
+                            <button @click="goRight(task)"> <img src="../media/arrow_right.svg.svg" alt="right"> </button>
                         </div>
                     </div>
             </div>
@@ -131,7 +135,7 @@ Vue.component('col3', {
             eventBus.$emit('takeFromThird', task);
             this.thirdColList.splice(this.thirdColList.indexOf(task), 1);
         },
-        returnTask(task){
+        returnTask (task) {
             task.returned = true;
         },
         goLeft(task){
@@ -181,10 +185,10 @@ Vue.component('col2', {
                          <p v-if="task.edited">Посденее редактирование: {{ task.edited }}</p>
                          
                          <div class="btns">
-                            <button @click="del(task)">Удалить</button>
-                            <button @click="edit(task)">Редактировать</button>
-                            <button @click="goLeft(task)">< Тут будет стрелочка</button>
-                            <button @click="goRight(task)"> Тут будет стрелочка > </button>
+                            <button @click="del(task)"><img src="../media/delete.svg" alt="delete"></button>
+                            <button @click="edit(task)"><img src="../media/edit.svg" alt="edit"></button>
+                            <button @click="returnTask(task)"><img src="../media/arrow_left.svg" alt="left"></button>
+                            <button @click="goRight(task)"> <img src="../media/arrow_right.svg" alt="right"> </button>
                         </div>
                     </div>
             </div>
