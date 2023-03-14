@@ -8,7 +8,7 @@ Vue.component('desk', {
             <div>
                 <col1></col1>
                 <col2></col2>
-                // третья колонка
+                <col3></col3>
                 // четвертая колонка
             </div>
      </div>
@@ -25,7 +25,7 @@ Vue.component('col3', {
         </div>
         <h2>Запланированные задачи</h2>
             <div>
-                    <div v-for="task in secondColList" class="col-item">
+                    <div v-for="task in thirdColList" class="col-item">
                         
                          <div class="edit_form" v-if="task.edit">
                             <label for="list_name">Заголовок</label>
@@ -74,18 +74,18 @@ Vue.component('col3', {
             task.edit = false;
         },
         goRight(task){
-            eventBus.$emit('takeFromFirst', task);
+            eventBus.$emit('takeFromThird', task);
             this.thirdColList.splice(this.thirdColList.indexOf(task), 1);
         },
         goLeft(task){
-            eventBus.$emit('takeBackFromSecond', task);
+            eventBus.$emit('takeBackFromThird', task);
             this.thirdColList.splice(this.thirdColList.indexOf(task), 1);
         }
 
     },
     mounted() {
-        eventBus.$on('takeFromFirst', task => {
-            this.secondColList.push(task);
+        eventBus.$on('takeFromSecond', task => {
+            this.thirdColList.push(task);
         })
     }
 })
@@ -148,7 +148,7 @@ Vue.component('col2', {
             task.edit = false;
         },
         goRight(task){
-            eventBus.$emit('takeFromFirst', task);
+            eventBus.$emit('takeFromSecond', task);
             this.secondColList.splice(this.secondColList.indexOf(task), 1);
         },
         goLeft(task){
@@ -159,6 +159,10 @@ Vue.component('col2', {
     },
     mounted() {
         eventBus.$on('takeFromFirst', task => {
+            this.secondColList.push(task);
+        })
+
+        eventBus.$on('takeBackFromThird', task => {
             this.secondColList.push(task);
         })
     }
