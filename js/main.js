@@ -39,11 +39,11 @@ Vue.component('col4', {
             <div>
                     <div v-for="task in fourthColList" class="col-item">
                          <h3>{{ task.list_name}} </h3>
-                         <p>Описание задачи: {{task.taskDisc}}</p>
-                         <p>Дедлайн: {{ task.deadLine }}</p>
-                         <p>Дата выполнения задачи: {{ task.doneDate }}</p>
+                         <p class="title">Описание задачи: {{task.taskDisc}}</p>
+                         <p class="title">Дедлайн: {{ task.deadLine }}</p>
+                         <p class="title">Дата выполнения задачи: {{ task.doneDate }}</p>
                          <p v-if="task.doneStatus" class="deadline-true">Сроки соблюдены</p>
-                         <p v-else class="deadline-false">Дедлайн просрочен</p>
+                         <p v-else class="deadline-false title">Дедлайн просрочен</p>
                          <p v-if="task.edited">Посденее редактирование: {{ task.edited }}</p>
                     </div>
             </div>
@@ -198,7 +198,7 @@ Vue.component('col2', {
                              <h3>{{ task.list_name}} </h3>
                              <p class="title">Описание задачи: {{ task.taskDisc }}</p>
                              
-                             <p v-if="task.reasonForReturn" class="returned" class="title">Возвращена по причине:</p>
+                             <p v-if="task.reasonForReturn" class="returned title">Возвращена по причине:</p>
                              <p v-if="task.reasonForReturn" v-for="reason in task.reasonForReturn"> {{ reason }}</p>
                              <p class="title">Дедлайн: {{ task.deadLine }}</p>
                              <p v-if="task.edited" class="title">Посденее редактирование: {{ task.edited }}</p>
@@ -266,7 +266,7 @@ Vue.component('col1', {
            <div>
                     <div v-for="task in firstColList" class="col-item">
                         
-                         <div class="edit_form" v-if="task.edit" class="title">
+                         <div class="edit_form title" v-if="task.edit" >
                             <label for="list_name">Заголовок</label>
                             <input type="text" id="list_name" v-model="task.list_name">
                             
@@ -283,7 +283,7 @@ Vue.component('col1', {
                              <h3>{{ task.list_name}} </h3>
                              <p>Описание задачи: {{ task.taskDisc }}</p>
                              
-                             <p v-if="task.reasonForReturn" class="returned" class="title">Возвращена по причине:</p>
+                             <p v-if="task.reasonForReturn" class="returned title">Возвращена по причине:</p>
                              <p v-if="task.reasonForReturn" v-for="reason in task.reasonForReturn"> {{ reason }}</p>
                              <p class="title">Дедлайн: {{ task.deadLine }}</p>
                              <p v-if="task.edited" class="title">Последнее редактирование: {{ task.edited }}</p>
