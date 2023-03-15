@@ -157,3 +157,33 @@ textarea {
     border-radius: 5px;
 
 }
+
+.deadline-true {
+    color: #3655c4;
+}
+
+.deadline-false {
+    color: darkred;
+}
+
+button {
+    border: none;
+    background-color: white;
+}
+
+.btns {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.btns > div {
+    display: flex;
+    justify-content: space-between;
+}
+
+.submit {
+    border: 1px solid #3f4149;
+    padding: 5px;
+    border-radius: 2px;
+}

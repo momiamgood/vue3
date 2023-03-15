@@ -31,9 +31,8 @@ Vue.component('col4', {
                          <p>Описание задачи: {{task.taskDisc}}</p>
                          <p>Дедлайн: {{ task.deadLine }}</p>
                          <p>Дата выполнения задачи: {{ task.doneDate }}</p>
-                         <p v-if="task.doneStatus">Сроки соблюдены</p>
-                         <p v-else>Дедлайн просрочен</p>
-                         
+                         <p v-if="task.doneStatus" class="deadline-true">Сроки соблюдены</p>
+                         <p v-else class="deadline-false">Дедлайн просрочен</p>
                          <p v-if="task.edited">Посденее редактирование: {{ task.edited }}</p>
                     </div>
             </div>
@@ -96,7 +95,7 @@ Vue.component('col3', {
                          <div v-if='task.returned' class="reasonForReturn">
                             <label for="reason">Причина возврата</label>
                             <input type="text" id="reason" v-model="task.reasonForReturn">
-                            <button @click="goLeft(task)">Вернуть</button>
+                            <button @click="goLeft(task)" class="submit">Вернуть</button>
                          </div>
                          
                          <h3>{{ task.list_name}} </h3>
@@ -105,10 +104,14 @@ Vue.component('col3', {
                          <p v-if="task.edited">Последнее редактирование: {{ task.edited }}</p>
                          
                          <div class="btns">
-                            <button @click="del(task)"><img src="../media/delete.svg" alt="delete"></button>
-                            <button @click="edit(task)"><img src="../media/edit.svg" alt="edit"></button>
-                            <button @click="returnTask(task)"><img src="../media/arrow_left.svg" alt="left"></button>
-                            <button @click="goRight(task)"> <img src="../media/arrow_right.svg.svg" alt="right"> </button>
+                         <div>
+                            <button @click="del(task)">Удалить</button>
+                            <button @click="edit(task)">Редактировать</button>
+                         </div>
+                         <div>
+                            <button @click="returnTask(task)"><-</button>
+                            <button @click="goRight(task)"> -> </button>
+                         </div>
                         </div>
                     </div>
             </div>
@@ -172,7 +175,7 @@ Vue.component('col2', {
                             <label for="deadLine">Дедлайн</label>
                             <input type="date" id="deadLine" v-model="task.deadLine">
                             
-                            <input type="submit" @click="saveChanges(task)">
+                            <input type="submit" @click="saveChanges(task)" class="submit">
                          </div>                         
                          
                          
@@ -185,10 +188,14 @@ Vue.component('col2', {
                          <p v-if="task.edited">Посденее редактирование: {{ task.edited }}</p>
                          
                          <div class="btns">
-                            <button @click="del(task)"><img src="../media/delete.svg" alt="delete"></button>
-                            <button @click="edit(task)"><img src="../media/edit.svg" alt="edit"></button>
-                            <button @click="returnTask(task)"><img src="../media/arrow_left.svg" alt="left"></button>
-                            <button @click="goRight(task)"> <img src="../media/arrow_right.svg" alt="right"> </button>
+                         <div>
+                            <button @click="del(task)">Удалить</button>
+                            <button @click="edit(task)">Редактировать</button>
+                         </div>
+                         <div>
+                            <button @click="goLeft(task)"><-</button>
+                            <button @click="goRight(task)"> -> </button>
+                         </div>
                         </div>
                     </div>
             </div>
@@ -262,9 +269,13 @@ Vue.component('col1', {
                          <p v-if="task.edited">Посденее редактирование: {{ task.edited }}</p>
                          
                          <div class="btns">
+                         <div>
                             <button @click="del(task)">Удалить</button>
                             <button @click="edit(task)">Редактировать</button>
-                            <button @click="goRight(task)"> Тут будет стрелочка > </button>
+                         </div>
+                         <div>
+                            <button @click="goRight(task)"> -> </button>
+                        </div>
                         </div>
                     </div>
             </div>
@@ -333,8 +344,8 @@ Vue.component('createTask', {
             let taskList = {
                 list_name: this.list_name,
                 taskDisc: this.taskDisc,
-                deadLine: this.deadline,
-                doneDate: new Date(),
+                deadLine: new Date(this.deadline),
+                doneDate: null,
                 edit: false,
                 edited: null,
                 returned: false,
