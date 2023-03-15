@@ -3,7 +3,7 @@ let eventBus = new Vue()
 Vue.component('desk', {
     template: `
     <div class='desk'>
-    <button class="create_task" @click="showModal = true">Создать задачу</button>
+    <button class="btn" @click="showModal = true">Создать задачу</button>
     <createTask v-if="showModal"></createTask>
     <div>
             <div>
@@ -90,37 +90,37 @@ Vue.component('col3', {
             <div>
                     <div v-for="task in thirdColList" class="col-item">
                         <div class="edit_form" v-if="task.edit">
-                            <label for="list_name">Заголовок</label>
+                            <label class="title"for="list_name">Заголовок</label>
                             <input type="text" id="list_name" v-model="task.list_name">
                             
-                            <label for="taskDisk">Описание задачи</label>
+                            <label class="title" for="taskDisk">Описание задачи</label>
                             <input type="text" id="taskDisc" v-model="task.taskDisc">
                             
-                            <label for="deadLine">Дедлайн</label>
+                            <label class="title" for="deadLine">Дедлайн</label>
                             <input type="date" id="deadLine" v-model="task.deadLine">
                             
                             <input type="submit" @click="saveChanges(task)">
                          </div>    
                          <div v-else>
                          <div v-if='task.returned' class="reasonForReturn">
-                            <label for="reason">Причина возврата</label>
+                            <label class="title" for="reason">Причина возврата</label>
                             <input type="text" id="reason" v-model="reason">
                             <button @click="goLeft(task)" class="submit">Вернуть</button>
                          </div>
                          <div v-else>
                              <h3>{{ task.list_name}} </h3>
-                             <p>Описание задачи: {{task.taskDisc}}</p>
-                             <p>Дедлайн: {{ task.deadLine }}</p>
-                             <p v-if="task.edited">Последнее редактирование: {{ task.edited }}</p>
+                             <p class="title">Описание задачи: {{task.taskDisc}}</p>
+                             <p class="title">Дедлайн: {{ task.deadLine }}</p>
+                             <p v-if="task.edited" class="title">Последнее редактирование: {{ task.edited }}</p>
                              
                              <div class="btns">
                              <div>
-                                <button @click="del(task)">Удалить</button>
-                                <button @click="edit(task)">Редактировать</button>
+                                <button class="del" @click="del(task)">Удалить</button>
+                                <button class="edit" @click="edit(task)">Редактировать</button>
                              </div>
                              <div>
-                                <button @click="returnTask(task)"><-</button>
-                                <button @click="goRight(task)"> -> </button>
+                                <button class="arrow" @click="returnTask(task)"><</button>
+                                <button class="arrow" @click="goRight(task)"> > </button>
                              </div>
                              </div>
                          </div>
@@ -182,13 +182,13 @@ Vue.component('col2', {
                     <div v-for="task in secondColList" class="col-item">
                         
                          <div class="edit_form" v-if="task.edit">
-                            <label for="list_name">Заголовок</label>
+                            <label for="list_name" class="title">Заголовок</label>
                             <input type="text" id="list_name" v-model="task.list_name">
                             
-                            <label for="taskDisk">Описание задачи</label>
+                            <label for="taskDisk" class="title">Описание задачи</label>
                             <input type="text" id="taskDisc" v-model="task.taskDisc">
                             
-                            <label for="deadLine">Дедлайн</label>
+                            <label for="deadLine" class="title">Дедлайн</label>
                             <input type="date" id="deadLine" v-model="task.deadLine">
                             
                             <input type="submit" @click="saveChanges(task)" class="submit">
@@ -196,21 +196,21 @@ Vue.component('col2', {
                          
                          <div v-else>
                              <h3>{{ task.list_name}} </h3>
-                             <p>Описание задачи: {{ task.taskDisc }}</p>
+                             <p class="title">Описание задачи: {{ task.taskDisc }}</p>
                              
-                             <p v-if="task.reasonForReturn" class="returned">Возвращена по причине:</p>
+                             <p v-if="task.reasonForReturn" class="returned" class="title">Возвращена по причине:</p>
                              <p v-if="task.reasonForReturn" v-for="reason in task.reasonForReturn"> {{ reason }}</p>
-                             <p>Дедлайн: {{ task.deadLine }}</p>
-                             <p v-if="task.edited">Посденее редактирование: {{ task.edited }}</p>
+                             <p class="title">Дедлайн: {{ task.deadLine }}</p>
+                             <p v-if="task.edited" class="title">Посденее редактирование: {{ task.edited }}</p>
                              
                              <div class="btns">
                              <div>
-                                <button @click="del(task)">Удалить</button>
-                                <button @click="edit(task)">Редактировать</button>
+                                <button class="del" @click="del(task)">Удалить</button>
+                                <button class="edit" @click="edit(task)">Редактировать</button>
                              </div>
                              <div>
-                                <button @click="goLeft(task)"><-</button>
-                                <button @click="goRight(task)"> -></button>
+                                <button class="arrow" @click="goLeft(task)"><</button>
+                                <button class="arrow" @click="goRight(task)"> ></button>
                              </div>
                             </div>
                         </div>
@@ -266,14 +266,14 @@ Vue.component('col1', {
            <div>
                     <div v-for="task in firstColList" class="col-item">
                         
-                         <div class="edit_form" v-if="task.edit">
+                         <div class="edit_form" v-if="task.edit" class="title">
                             <label for="list_name">Заголовок</label>
                             <input type="text" id="list_name" v-model="task.list_name">
                             
-                            <label for="taskDisk">Описание задачи</label>
+                            <label for="taskDisk" class="title">Описание задачи</label>
                             <input type="text" id="taskDisc" v-model="task.taskDisc">
                             
-                            <label for="deadLine">Дедлайн</label>
+                            <label for="deadLine" class="title">Дедлайн</label>
                             <input type="date" id="deadLine" v-model="task.deadLine">
                             
                             <input type="submit" @click="saveChanges(task)" class="submit">
@@ -283,18 +283,18 @@ Vue.component('col1', {
                              <h3>{{ task.list_name}} </h3>
                              <p>Описание задачи: {{ task.taskDisc }}</p>
                              
-                             <p v-if="task.reasonForReturn" class="returned">Возвращена по причине:</p>
+                             <p v-if="task.reasonForReturn" class="returned" class="title">Возвращена по причине:</p>
                              <p v-if="task.reasonForReturn" v-for="reason in task.reasonForReturn"> {{ reason }}</p>
-                             <p>Дедлайн: {{ task.deadLine }}</p>
-                             <p v-if="task.edited">Посденее редактирование: {{ task.edited }}</p>
-                             
+                             <p class="title">Дедлайн: {{ task.deadLine }}</p>
+                             <p v-if="task.edited" class="title">Последнее редактирование: {{ task.edited }}</p>
+                              
                              <div class="btns">
                              <div>
-                                <button @click="del(task)">Удалить</button>
-                                <button @click="edit(task)">Редактировать</button>
+                                <button class="del" @click="del(task)">Удалить</button>
+                                <button class="edit" @click="edit(task)">Редактировать</button>
                              </div>
                              <div>
-                                <button @click="goRight(task)"> -></button>
+                                <button class="arrow" @click="goRight(task)"> ></button>
                              </div>
                             </div>
                         </div>

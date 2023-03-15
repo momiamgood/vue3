@@ -247,3 +247,34 @@ button {
     padding: 10px;
     background-color: #d5deff;
 }
+
+
+.del {
+    width: 100px;
+    color: white;
+    background-color: darkred;
+    padding: 5px;
+    border-radius: 5px;
+}
+
+.edit {
+    width: 120px;
+    color: white;
+    background-color: #3655c4;
+    padding: 5px;
+    border-radius: 5px;
+}
+
+.arrow {
+    font-weight: bold;
+    font-size: 20px;
+    color: #3655c4;
+}
+
+.title {
+    font-weight: bold;
+}
+
+.btn {
+    border-radius: 5px;
+}
