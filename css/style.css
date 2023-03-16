@@ -45,10 +45,10 @@ input {
     padding: 5px;
     border-radius: 5px;
     border: 1px solid #3f4149;
+    margin-top: 10px;
     margin-bottom: 10px;
 }
 label {
-    margin-bottom: 20px;
     font-size: 15px;
 }
 
@@ -150,6 +150,7 @@ button > img {
 }
 
 textarea {
+    margin-top: 10px;
     resize: none;
     padding: 10px;
     height: 100px;
@@ -269,6 +270,7 @@ button {
     font-weight: bold;
     font-size: 20px;
     color: #3655c4;
+    background-color: rgba(0,0,0,0%);
 }
 
 .title {

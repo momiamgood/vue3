@@ -27,8 +27,6 @@ Vue.component('desk', {
     }
 })
 
-
-
 Vue.component('col4', {
     template: `
         <div class="col">
@@ -37,14 +35,29 @@ Vue.component('col4', {
         </div>
         <h2>Законченные задачи</h2>
             <div>
-                    <div v-for="task in fourthColList" class="col-item">
+                    <div v-for="task in fourthColList" class="col-item" :style="{ backgroundColor:task.color }">
                          <h3>{{ task.list_name}} </h3>
-                         <p class="title">Описание задачи: {{task.taskDisc}}</p>
-                         <p class="title">Дедлайн: {{ task.deadLine }}</p>
-                         <p class="title">Дата выполнения задачи: {{ task.doneDate }}</p>
+                         
+                         <p class="title">Описание задачи:</p>
+                         <p>{{task.taskDisc}}</p>
+                         
+                         <p class="title" v-if="task.reasonForReturn">Причина возврата на тестировании:</p>
+                         <p v-if="task.reasonForReturn" v-for="reason in task.reasonForReturn">{{ reason }}</p>
+                         
+                         <p v-if="task.bag_report!=0" class="title">Баг-репорт:</p>
+                         <p v-if="task.bag_report!=0" v-for="bug in task.bag_report">{{ bug }}</p>
+                         
+                         <p class="title">Дедлайн:</p>
+                         <p>{{ task.deadLine }}</p>
+                         
+                         <p class="title">Дата выполнения задачи: </p>
+                         <p>{{ task.doneDate }}</p>
+                         
+                         <p v-if="task.edited" class="title">Последнее редактирование:</p> 
+                         <p> {{ task.edited }}</p>
+                         
                          <p v-if="task.doneStatus" class="deadline-true">Сроки соблюдены</p>
                          <p v-else class="deadline-false title">Дедлайн просрочен</p>
-                         <p v-if="task.edited">Посденее редактирование: {{ task.edited }}</p>
                     </div>
             </div>
         </div>
@@ -65,19 +78,16 @@ Vue.component('col4', {
         eventBus.$on('takeFromThird', task => {
             task.doneDate = new Date();
 
-            if (task.deadLine <= task.doneDate){
+            if (task.deadLine >= task.doneDate){
                 task.doneStatus = true
             } else task.doneStatus = false;
 
-
-            console.log(task.deadLine);
-            console.log(task.doneDate);
-            console.log(task.doneStatus);
+            task.doneDate.toLocaleDateString()
+            task.deadLine.toDateString();
             this.fourthColList.push(task);
         })
     }
 })
-
 
 
 Vue.component('col3', {
@@ -88,7 +98,7 @@ Vue.component('col3', {
         </div>
         <h2>Тестирование</h2>
             <div>
-                    <div v-for="task in thirdColList" class="col-item">
+                    <div v-for="task in thirdColList" class="col-item" :style="{ backgroundColor:task.color }">
                         <div class="edit_form" v-if="task.edit">
                             <label class="title"for="list_name">Заголовок</label>
                             <input type="text" id="list_name" v-model="task.list_name">
@@ -99,19 +109,28 @@ Vue.component('col3', {
                             <label class="title" for="deadLine">Дедлайн</label>
                             <input type="date" id="deadLine" v-model="task.deadLine">
                             
-                            <input type="submit" @click="saveChanges(task)">
+                            <input type="submit" @click="saveChanges(task)" class="btn">
                          </div>    
                          <div v-else>
-                         <div v-if='task.returned' class="reasonForReturn">
+                         <div v-if='show' class="reasonForReturn">
                             <label class="title" for="reason">Причина возврата</label>
-                            <input type="text" id="reason" v-model="reason">
-                            <button @click="goLeft(task)" class="submit">Вернуть</button>
+                            <textarea id="reason" v-model="reason"></textarea>
+                            <button @click="goLeft(task)" class="submit" class="btn">Вернуть</button>
                          </div>
                          <div v-else>
                              <h3>{{ task.list_name}} </h3>
-                             <p class="title">Описание задачи: {{task.taskDisc}}</p>
-                             <p class="title">Дедлайн: {{ task.deadLine }}</p>
-                             <p v-if="task.edited" class="title">Последнее редактирование: {{ task.edited }}</p>
+                             
+                             <p class="title">Описание задачи:</p> 
+                             <p>{{task.taskDisc}}</p>
+                             
+                             <p class="title">Дедлайн:</p> 
+                             <p> {{ task.deadLine }}</p>
+                             
+                             <p v-if="task.edited" class="title">Последнее редактирование:</p>
+                             <p>{{ task.edited }}</p>
+                             
+                             <p v-if="task.bag_report!=0" class="title">Баг-репорт:</p>
+                             <p v-if="task.bag_report!=0" v-for="bug in task.bag_report">{{ bug }}</p>
                              
                              <div class="btns">
                              <div>
@@ -131,6 +150,7 @@ Vue.component('col3', {
     `,
     data () {
         return {
+            show: false,
             reason: null,
             thirdColList: [],
             errors:[]
@@ -151,15 +171,17 @@ Vue.component('col3', {
             eventBus.$emit('takeFromThird', task);
             this.thirdColList.splice(this.thirdColList.indexOf(task), 1);
         },
-        returnTask (task) {
+        returnTask(task) {
             task.returned = true;
+            this.show = true;
+            task.color = '#FF6886';
         },
         goLeft(task){
             task.reasonForReturn.push(this.reason);
             this.reason = null;
             eventBus.$emit('takeBackFromThird', task);
             this.thirdColList.splice(this.thirdColList.indexOf(task), 1);
-            task.returned = false;
+            this.show = false;
         }
 
     },
@@ -179,9 +201,17 @@ Vue.component('col2', {
         </div>
         <h2>Задачи в работе</h2>
             <div>
-                    <div v-for="task in secondColList" class="col-item">
+                    <div v-for="task in secondColList" class="col-item" :style="{ backgroundColor:task.color }">
                         
-                         <div class="edit_form" v-if="task.edit">
+                        <div v-if="show">
+                            <label class="title">Баг-репорт</label>
+                            <textarea type="text" v-model="bag_report_itm"></textarea>
+                            
+                            <input type="submit" @click="go(task)" class="btn">
+                        </div>
+                        
+                        <div v-else>
+                         <div  class="edit_form" v-if="task.edit">
                             <label for="list_name" class="title">Заголовок</label>
                             <input type="text" id="list_name" v-model="task.list_name">
                             
@@ -191,17 +221,26 @@ Vue.component('col2', {
                             <label for="deadLine" class="title">Дедлайн</label>
                             <input type="date" id="deadLine" v-model="task.deadLine">
                             
-                            <input type="submit" @click="saveChanges(task)" class="submit">
+                            <input type="submit" @click="saveChanges(task)" class="btn">
                          </div>                         
                          
                          <div v-else>
                              <h3>{{ task.list_name}} </h3>
-                             <p class="title">Описание задачи: {{ task.taskDisc }}</p>
                              
-                             <p v-if="task.reasonForReturn" class="returned title">Возвращена по причине:</p>
-                             <p v-if="task.reasonForReturn" v-for="reason in task.reasonForReturn"> {{ reason }}</p>
-                             <p class="title">Дедлайн: {{ task.deadLine }}</p>
-                             <p v-if="task.edited" class="title">Посденее редактирование: {{ task.edited }}</p>
+                             <p class="title">Описание задачи:</p> 
+                             <p>{{ task.taskDisc }}</p>
+                             
+                             <p v-if="task.reasonForReturn!=0" class="title">Причина возврата:</p>
+                             <p v-if="task.reasonForReturn!=0" v-for="reason in task.reasonForReturn">{{ reason }}</p>
+                             
+                             <p class="title">Дедлайн:</p> 
+                             <p>{{ task.deadLine }}</p>
+                             
+                             <p v-if="task.edited" class="title">Последнее редактирование:</p>
+                             <p>{{ task.edited }}</p>
+                             
+                             <p v-if="task.bag_report!=0" class="title">Баг-репорт:</p>
+                             <p v-if="task.bag_report!=0" v-for="bug in task.bag_report">{{ bug }}</p>
                              
                              <div class="btns">
                              <div>
@@ -214,17 +253,28 @@ Vue.component('col2', {
                              </div>
                             </div>
                         </div>
+                        </div>
                     </div>
             </div>
         </div>
     `,
     data () {
         return {
+            amount_itms:null,
+            bag_report_itm: null,
+            show: false,
             secondColList: [],
             errors:[]
         }
     },
     methods: {
+        go(task){
+            this.show = false;
+            task.bag_report.push(this.bag_report_itm);
+            task.color = "#7EE572";
+            eventBus.$emit('takeFromSecond', task);
+            this.secondColList.splice(this.secondColList.indexOf(task), 1);
+        },
         del(task){
             this.secondColList.splice(this.secondColList.indexOf(task), 1);
         },
@@ -236,8 +286,13 @@ Vue.component('col2', {
             task.edit = false;
         },
         goRight(task){
-            eventBus.$emit('takeFromSecond', task);
-            this.secondColList.splice(this.secondColList.indexOf(task), 1);
+            if (task.returned){
+                this.show = true;
+            }
+            else {
+                eventBus.$emit('takeFromSecond', task);
+                this.secondColList.splice(this.secondColList.indexOf(task), 1);
+            }
         },
         goLeft(task){
             eventBus.$emit('takeBackFromSecond', task);
@@ -276,18 +331,26 @@ Vue.component('col1', {
                             <label for="deadLine" class="title">Дедлайн</label>
                             <input type="date" id="deadLine" v-model="task.deadLine">
                             
-                            <input type="submit" @click="saveChanges(task)" class="submit">
+                            <input type="submit" @click="saveChanges(task)" class="btn">
                          </div>                         
                          
                          <div v-else>
                              <h3>{{ task.list_name}} </h3>
-                             <p>Описание задачи: {{ task.taskDisc }}</p>
                              
-                             <p v-if="task.reasonForReturn" class="returned title">Возвращена по причине:</p>
-                             <p v-if="task.reasonForReturn" v-for="reason in task.reasonForReturn"> {{ reason }}</p>
-                             <p class="title">Дедлайн: {{ task.deadLine }}</p>
-                             <p v-if="task.edited" class="title">Последнее редактирование: {{ task.edited }}</p>
+                             <p class="title">Описание задачи:</p>
+                             <p>{{ task.taskDisc }}</p>
+                             
+                             <p v-if="task.reasonForReturn!=0" class="title">Причина возврата:</p>
+                             <p v-if="task.reasonForReturn" v-for="reason in task.reasonForReturn">{{ reason }}</p>
+                             
+                             <p class="title">Дедлайн:</p> 
+                             <p>{{ task.deadLine }}</p>
+                             
+                             <p v-if="task.edited" class="title">Последнее редактирование:</p> 
+                             <p>{{ task.edited }}</p>
                               
+                              <p v-if="task.bag_report!=0" class="title">Баг-репорт:</p>
+                              <p v-if="task.bag_report!=0" v-for="bug in task.bag_report">{{ bug }}</p>
                              <div class="btns">
                              <div>
                                 <button class="del" @click="del(task)">Удалить</button>
@@ -378,7 +441,9 @@ Vue.component('createTask', {
                 edited: null,
                 returned: false,
                 reasonForReturn: [],
-                doneStatus: null
+                doneStatus: null,
+                color: null,
+                bag_report:[]
             }
             eventBus.$emit('CreateTaskList', taskList);
             this.list_name = this.deadline = this.taskDisc = null;
