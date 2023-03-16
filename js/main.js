@@ -115,7 +115,7 @@ Vue.component('col3', {
                          <div v-if='show' class="reasonForReturn">
                             <label class="title" for="reason">Причина возврата</label>
                             <textarea id="reason" v-model="reason"></textarea>
-                            <button @click="goLeft(task)" class="submit" class="btn">Вернуть</button>
+                            <button @click="goLeft(task)" class="btn">Вернуть</button>
                          </div>
                          <div v-else>
                              <h3>{{ task.list_name}} </h3>
